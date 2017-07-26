@@ -20,13 +20,14 @@ public class Main {
             DatabaseManager dbm = new DatabaseManager(connection);
             Statement statement = dbm.getStatement();
             BankAccount myAccount = new BankAccount(statement);
-
+//            dbm.dropBankTable();
+//            dbm.createBankTable();
             //myAccount.deposit(1035.77);
             //System.out.println(myAccount.getBalance());
-            //myAccount.withdraw(40.00);
+            myAccount.withdraw(15.0);
+            //System.out.println(myAccount.getBalance());
 
 //            List<BankAccount> activity = myAccount.showTransactionHistory(dbm);
-//            System.out.println("Current balance: " + myAccount.getBalance());
 //            for (BankAccount account : activity){
 //                System.out.println(account);
 //            }

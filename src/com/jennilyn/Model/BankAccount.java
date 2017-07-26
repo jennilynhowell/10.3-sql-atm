@@ -40,9 +40,11 @@ public class BankAccount {
     }
 
     public double withdraw(double transactionAmount) throws SQLException {
-        this.balance -= transactionAmount;
+        double currentBal = this.balance;
+        double newBal = (currentBal - transactionAmount);
+        System.out.println("new balance: " + newBal);
 
-        String formattedSql = String.format("INSERT INTO bank(balance, transactionAmount, transactionType) VALUES (%s, %s, 'withdrawal')", this.balance, transactionAmount);
+        String formattedSql = String.format("INSERT INTO bank(balance, transactionAmount, transactionType) VALUES (%s, %s, 'withdrawal')", this.balance,transactionAmount);
         statement.executeUpdate(formattedSql);
 
         return balance;
