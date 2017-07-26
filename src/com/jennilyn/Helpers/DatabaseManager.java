@@ -18,7 +18,7 @@ public class DatabaseManager {
     }
 
     public void createBankTable() throws SQLException {
-        statement.executeUpdate("CREATE TABLE bank (id INTEGER PRIMARY KEY, transactionAmount DOUBLE, transactionType STRING, transactionDate DATETIME DEFAULT CURRENT_TIMESTAMP)");
+        statement.executeUpdate("CREATE TABLE bank (id INTEGER PRIMARY KEY, balance DOUBLE, transactionAmount DOUBLE, transactionType STRING, transactionDate DATETIME DEFAULT CURRENT_TIMESTAMP)");
     }
 
     public Statement getStatement() {

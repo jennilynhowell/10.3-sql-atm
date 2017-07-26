@@ -25,11 +25,11 @@ public class Main {
             //System.out.println(myAccount.getBalance());
             //myAccount.withdraw(40.00);
 
-            List<BankAccount> activity = myAccount.showTransactionHistory(dbm);
-            System.out.println("Current balance: " + myAccount.getBalance());
-            for (BankAccount account : activity){
-                System.out.println(account);
-            }
+//            List<BankAccount> activity = myAccount.showTransactionHistory(dbm);
+//            System.out.println("Current balance: " + myAccount.getBalance());
+//            for (BankAccount account : activity){
+//                System.out.println(account);
+//            }
 
         } catch (SQLException ex) {
             System.out.println("Something went wrong with your database connections.");

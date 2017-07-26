@@ -22,7 +22,8 @@ public class BankAccount {
     }
 
     //for reporting:
-    public BankAccount(Statement statement, double transactionAmount, String transactionType, String transactionDate) {
+    public BankAccount(double balance, Statement statement, double transactionAmount, String transactionType, String transactionDate) {
+        this.balance = balance;
         this.statement = statement;
         this.transactionAmount = transactionAmount;
         this.transactionType = transactionType;
@@ -30,18 +31,20 @@ public class BankAccount {
     }
 
     public double deposit(double transactionAmount) throws SQLException {
-        String formattedSql = String.format("INSERT INTO bank(transactionAmount, transactionType) VALUES (%s, 'deposit')", transactionAmount);
-
-        statement.executeUpdate(formattedSql);
         this.balance += transactionAmount;
+
+        String formattedSql = String.format("INSERT INTO bank(balance, transactionAmount, transactionType) VALUES (%s, %s, 'deposit')", this.balance,transactionAmount);
+        statement.executeUpdate(formattedSql);
 
         return balance;
     }
 
     public double withdraw(double transactionAmount) throws SQLException {
-        String formattedSql = String.format("INSERT INTO bank(transactionAmount, transactionType) VALUES (%s, 'withdrawal')", transactionAmount);
-        statement.executeUpdate(formattedSql);
         this.balance -= transactionAmount;
+
+        String formattedSql = String.format("INSERT INTO bank(balance, transactionAmount, transactionType) VALUES (%s, %s, 'withdrawal')", this.balance, transactionAmount);
+        statement.executeUpdate(formattedSql);
+
         return balance;
     }
 
@@ -55,10 +58,11 @@ public class BankAccount {
         Statement tempStatement = dbm.getStatement();
 
         while(rs.next()){
+            double balance = rs.getDouble("balance");
             double transactionAmount = rs.getDouble("transactionAmount");
             String transactionType = rs.getString("transactionType");
             String transactionDate = rs.getString("transactionDate");
-            BankAccount tempResult = new BankAccount(tempStatement, transactionAmount, transactionType, transactionDate);
+            BankAccount tempResult = new BankAccount(balance, tempStatement, transactionAmount, transactionType, transactionDate);
             tempCollection.add(tempResult);
         }
         return tempCollection;
@@ -66,8 +70,9 @@ public class BankAccount {
 
     @Override
     public String toString() {
-        return "BankAccount{" +
-                "transactionAmount=" + transactionAmount +
+        return "Account History{" +
+                "balance=" + balance +
+                ", transactionAmount=" + transactionAmount +
                 ", transactionType='" + transactionType + '\'' +
                 ", transactionDate='" + transactionDate + '\'' +
                 '}';
