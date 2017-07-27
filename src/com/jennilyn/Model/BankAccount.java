@@ -2,7 +2,7 @@ package com.jennilyn.Model;
 
 import com.jennilyn.Helpers.DatabaseManager;
 
-import java.sql.Date;
+import javax.swing.plaf.nimbus.State;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -30,28 +30,55 @@ public class BankAccount {
         this.transactionDate = transactionDate;
     }
 
-    public double deposit(double transactionAmount) throws SQLException {
-        this.balance += transactionAmount;
+    public void transaction(DatabaseManager dbm, double amount, String type) throws SQLException {
+        double mostRecentBalance = 0.0;
+        double newBalance;
+        Statement statement = dbm.getStatement();
+        ResultSet rs = dbm.getLastActivity("bank");
 
-        String formattedSql = String.format("INSERT INTO bank(balance, transactionAmount, transactionType) VALUES (%s, %s, 'deposit')", this.balance,transactionAmount);
-        statement.executeUpdate(formattedSql);
+        if(rs.next()) {
+            mostRecentBalance = rs.getDouble("balance");
+            System.out.println("found balance: " + mostRecentBalance);
 
-        return balance;
+        } else {
+            mostRecentBalance = 0.0;
+            System.out.println("did not find a recent balance.");
+        }
+
+
+        if (amount < 0 && type == "withdraw"){
+            newBalance = mostRecentBalance + amount;
+            pushTransaction(amount, newBalance, type);
+            System.out.println("Withdrawal approved.");
+
+        } else if (amount > 0 && type == "deposit") {
+            newBalance = mostRecentBalance + amount;
+            pushTransaction(amount, newBalance, type);
+            System.out.println("Deposit approved.");
+
+        } else {
+            System.out.println("Sorry, something went wrong with this transaction.");
+        }
+
+
     }
 
-    public double withdraw(double transactionAmount) throws SQLException {
-        double currentBal = this.balance;
-        double newBal = (currentBal - transactionAmount);
-        System.out.println("new balance: " + newBal);
+    public void pushTransaction(double transactionAmount, double newBalance, String type) throws SQLException {
 
-        String formattedSql = String.format("INSERT INTO bank(balance, transactionAmount, transactionType) VALUES (%s, %s, 'withdrawal')", this.balance,transactionAmount);
+        String formattedSql = String.format("INSERT INTO bank(balance, transactionAmount, transactionType) VALUES (%s, %s, '%s')", newBalance, transactionAmount, type);
         statement.executeUpdate(formattedSql);
 
-        return balance;
     }
 
-    public double getBalance() {
-        return balance;
+    public double getBalance(DatabaseManager dbm) throws SQLException {
+        ResultSet rs = dbm.getLastActivity("bank");
+        double mostRecentBalance = 0.0;
+
+        if(rs.next()) {
+            mostRecentBalance = rs.getDouble("balance");
+        }
+
+        return mostRecentBalance;
     }
 
     public List<BankAccount> showTransactionHistory(DatabaseManager dbm) throws SQLException {

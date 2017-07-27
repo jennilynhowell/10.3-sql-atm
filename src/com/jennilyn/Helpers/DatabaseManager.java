@@ -30,4 +30,10 @@ public class DatabaseManager {
         ResultSet rs = statement.executeQuery(formattedSQL);
         return rs;
     }
+
+    public ResultSet getLastActivity(String tableName) throws SQLException {
+        String formattedSQL = String.format("SELECT * FROM %s ORDER BY transactionDate DESC LIMIT 1;)", tableName);
+        ResultSet rs = statement.executeQuery(formattedSQL);
+        return rs;
+    }
 }
