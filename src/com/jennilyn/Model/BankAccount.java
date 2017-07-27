@@ -50,7 +50,7 @@ public class BankAccount {
             pushTransaction(amount, newBalance, type);
             System.out.println("Deposit approved.");
 
-        } else if (type == "withdraw") {
+        } else if (type == "withdraw" && mostRecentBalance >= amount) {
             newBalance = mostRecentBalance - amount;
             pushTransaction(amount, newBalance, type);
             System.out.println("Withdrawal approved.");
