@@ -40,6 +40,7 @@ public class Main {
         System.out.println("1) Stalk my account balance.");
         System.out.println("2) Scratch out a new transaction.");
         System.out.println("3) I'm just here for bad cat puns.");
+        System.out.println("4) Leave and go take a nap.");
         System.out.println("=========\n");
 
         int choice = scanner.nextInt();
@@ -76,6 +77,10 @@ public class Main {
                 break;
             case 3:
                 System.out.println("Live long and pawsper, panther pal.");
+                break;
+            case 4:
+                System.out.println("Thanks for your business.");
+                System.exit(0);
                 break;
             default:
                 System.out.println("Don't stress meowt. Pawlese choose a valid number.");
