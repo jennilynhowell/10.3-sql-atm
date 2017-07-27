@@ -38,23 +38,22 @@ public class BankAccount {
 
         if(rs.next()) {
             mostRecentBalance = rs.getDouble("balance");
-            System.out.println("found balance: " + mostRecentBalance);
 
         } else {
             mostRecentBalance = 0.0;
-            System.out.println("did not find a recent balance.");
+            System.out.println("I did not smell a recent balance. Welcome to your new account.");
         }
 
 
-        if (amount < 0 && type == "withdraw"){
-            newBalance = mostRecentBalance + amount;
-            pushTransaction(amount, newBalance, type);
-            System.out.println("Withdrawal approved.");
-
-        } else if (amount > 0 && type == "deposit") {
+        if (type == "deposit"){
             newBalance = mostRecentBalance + amount;
             pushTransaction(amount, newBalance, type);
             System.out.println("Deposit approved.");
+
+        } else if (type == "withdraw") {
+            newBalance = mostRecentBalance - amount;
+            pushTransaction(amount, newBalance, type);
+            System.out.println("Withdrawal approved.");
 
         } else {
             System.out.println("Sorry, something went wrong with this transaction.");
